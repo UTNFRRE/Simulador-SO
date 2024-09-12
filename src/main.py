@@ -1,0 +1,1 @@
+#logica principal del simulador
