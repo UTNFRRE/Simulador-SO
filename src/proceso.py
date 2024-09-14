@@ -10,7 +10,7 @@ class proceso:
         self.tiempoRestante = TI
         self.tiempoEspera = 0
         self.tiempoRetorno = 0
-        self.particion = None
+        self.particion = 0
 
     def __str__(self) -> str:
         pass
@@ -38,3 +38,6 @@ class proceso:
     #setter for retorno
     def set_retorno(self, nuevo_retorno):
         self.tiempoRetorno = nuevo_retorno
+
+    def set_particion(self, particion):
+        self.particion = particion
