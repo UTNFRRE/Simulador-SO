@@ -8,9 +8,9 @@ class cpu:
     #metodo que asigna un proceso al cpu
     def asignarProceso(self, proceso):
         self.procesoActual = proceso
-       # self.tiempoRestante = proceso.tiempo 
+       # self.tiempoRestante = proceso.tiempo  
        # el tiempo restante es el quantum 
-    #metodo que ejecuta un ciclo de reloj
+    #metodo que ejecuta un ciclo de reloj 
     def ejecutar(self, tiempo_actual):
         #si hay un proceso en ejecucion se decrementa el tiempo restante de cpu y del proceso actual
             self.tiempoRestante -= 1
