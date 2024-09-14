@@ -2,6 +2,7 @@
 from proceso import proceso
 from cpu import cpu
 from memoria import memoria
+from planLargo import planificadorLargo
 
 import msvcrt
 
@@ -15,8 +16,7 @@ class Simulador:
         self.procesos = []
         self.memoria = memoria()
         self.cpu = cpu()
-        self.cola_listos = []
-        self.cola_nuevos = []
+        self.planificadorLargoPlazo = planificadorLargo(self.memoria, self.procesos)
         self.multiprogramacion = 5   #numero de procesos que pueden estar en la cola de listos
         self.tiempo_actual = 0
         self.quantum = 3
@@ -31,34 +31,12 @@ class Simulador:
             tiempoArribo = int(datos[2])
             tiempoIrrupcion = int(datos[3])
             self.procesos.append(proceso(PID, tiempoArribo, tiempoIrrupcion, tamaño))
+     self.planificadorLargoPlazo.set_procesos(self.procesos)
 
-    def asignar_memoria(self, proceso):    #por cada particion calcula la fragmentacion interna y elige la particion con mayor fragmentacion
-        particion_elegida = None
-        max_fragmentacion = -1
-        print("Proceso intentando asignar", proceso.PID)
-        for particion in self.memoria.getParticiones():
-            if not particion.ocupado and particion.tamaño >= proceso.tamaño:
-                fragmentacion = particion.tamaño - proceso.tamaño
-                if fragmentacion > max_fragmentacion:
-                    max_fragmentacion = fragmentacion
-                    particion_elegida = particion
-        if particion_elegida:
-            particion_elegida.añadir_proceso(proceso)
-            proceso.particion = particion_elegida
-            return True
-        return False
+     # self.planificadorLargoPlazo.WorstFit
+    
 
     def planificar_cpu_memoria(self):
-            # Cargar procesos que han llegado
-            for proceso in self.procesos[:]:    #por cada proceso en la lista de procesos
-                if proceso.tiempoArribo <= self.tiempo_actual:  # si el tiempo de arribo del proceso es menor o igual al tiempo actual se intenta asignar memoria
-                    if len(self.cola_listos) < self.multiprogramacion:  #si la cola de listos no esta llena
-                        if self.asignar_memoria(proceso):  #si se asigna memoria se añade a la cola de listos y se elimina de la lista de procesos
-                            self.cola_listos.append(proceso)   # agregar proceso a la cola de listos
-                    else:
-                        self.cola_nuevos.append(proceso)  #si la cola de listos esta llena se añade a la cola de nuevos
-                    self.procesos.remove(proceso)  #se asigna a una de las colas y se elimina el proceso de la lista de procesos
-
             # Mover procesos de la cola de nuevos a la cola de listos si hay espacio
             while len(self.cola_listos) < 5 and self.cola_nuevos:
                 proceso = self.cola_nuevos.pop(0)

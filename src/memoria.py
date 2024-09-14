@@ -49,13 +49,12 @@ class memoria:
             particionMediana(),
             particionPequeña()
         ]
-        self.cola_listos = []
-        self.cola_nuevos = []
+        self.cola_listos = [[],[]]   #cola de listos en memoria, listos en disco
         self.multiprogramacion = multiprogramacion
     #metodo encargado de añadir un proceso a una particion especifica
     def añadirProceso(self, proceso, particion):
         self.particiones[particion].añadir_proceso(proceso)
-        self.AsignarColaListos(proceso)
+        self.AsignarColaListosEnMemoria(proceso)
     #metodo encargado de liberar una particion, llama al metodo liberar de la clase particion
     def liberarParticion(self, particion):
         particion.liberar()
@@ -68,6 +67,12 @@ class memoria:
     def getParticiones(self):
         return self.particiones
     
-    def AsignarColaListos (self, proceso):
-        self.cola_listos.append(proceso)
+    def AsignarColaListosEnMemoria (self, proceso):
+        self.cola_listos[0].append(proceso)    # añado a la primer parte de la lista
+
+    def AsignarColaListosEnDisco (self, proceso):
+        self.cola_listos[1].append(proceso)
+    
+    def getTamañoCola(self):
+        return len(self.cola_listos[0]) + len(self.cola_listos[1])
             

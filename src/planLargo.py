@@ -5,14 +5,14 @@
 # asignar la particion 
 # manejar la cola de procesos nuevos
 
-class PlanificadorLargo:
+class planificadorLargo:
 
 
-    def __init__(self, memoria, procesos):
+    def __init__(self, memoria, procesos, multiprogramacion):
         self.memoria = memoria
         self.procesos = procesos
-        self.cola_nuevos = []
-        self.cola_listos = []
+        self.multiprogramacion = multiprogramacion
+ 
 
     def WorstFit(self, proceso):
         particion_elegida = None
@@ -28,4 +28,12 @@ class PlanificadorLargo:
             self.memoria.añadirProceso(proceso, particion_elegida)    # pedir a memoria q añada, y memoria pide a particion
             proceso.set_particion(particion_elegida)
             return True
+        else:
+            if self.memoria.getTamañoCola() < self.multiprogramacion:
+                self.memoria.AsignarColaListosEnDisco(proceso)
         return False
+    
+    def set_procesos(self, procesos):
+        self.procesos = procesos
+
+    
