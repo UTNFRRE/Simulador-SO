@@ -43,15 +43,19 @@ class particionPequeña(particion):
         return "Particion pequeña"
 #clase memoria
 class memoria:
-    def __init__(self):
+    def __init__(self , multiprogramacion):
         self.particiones = [
             particionGrande(),
             particionMediana(),
             particionPequeña()
         ]
+        self.cola_listos = []
+        self.cola_nuevos = []
+        self.multiprogramacion = multiprogramacion
     #metodo encargado de añadir un proceso a una particion especifica
     def añadirProceso(self, proceso, particion):
         self.particiones[particion].añadir_proceso(proceso)
+        self.AsignarColaListos(proceso)
     #metodo encargado de liberar una particion, llama al metodo liberar de la clase particion
     def liberarParticion(self, particion):
         particion.liberar()
@@ -63,3 +67,7 @@ class memoria:
 
     def getParticiones(self):
         return self.particiones
+    
+    def AsignarColaListos (self, proceso):
+        self.cola_listos.append(proceso)
+            
