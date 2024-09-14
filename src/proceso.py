@@ -10,6 +10,10 @@ class proceso:
         self.tiempoRestante = TI
         self.tiempoEspera = 0
         self.tiempoRetorno = 0
+        self.particion = None
+
+    def __str__(self) -> str:
+        pass
 
     # getter for tamaño
     def get_tamaño(self):

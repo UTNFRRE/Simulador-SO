@@ -19,9 +19,10 @@ class particion:
         self.fragmentacionInterna = self.tamaño - proceso.tamaño
 
     def liberar(self):
+        print(f"Se ha liberado la partición de {self.tamaño}K en {self.dirInicio}K")
         self.proceso = None
         self.ocupado = False
-        self.fragmentacionInterna = 0  
+        self.fragmentacionInterna = 0 
     
 #la siguiente jerarquia de clases permite que al liberarse una particion
 #se pueda saber que tipo de particion es.
@@ -52,8 +53,8 @@ class memoria:
     def añadirProceso(self, proceso, particion):
         self.particiones[particion].añadir_proceso(proceso)
     #metodo encargado de liberar una particion, llama al metodo liberar de la clase particion
-    def liberarParticion(self, particion):   
-        self.particiones[particion].liberar()
+    def liberarParticion(self, particion):
+        particion.liberar()
     #en cada ciclo de reloj se aumenta el tiempo acumulado de cada particion
     def aumentarTiempo(self):
         for particion in self.particiones:
