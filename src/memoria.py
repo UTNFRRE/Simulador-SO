@@ -74,6 +74,9 @@ class memoria:
         if proceso not in self.cola_listos[1]:
             self.cola_listos[1].append(proceso)
     
+    def getColaListosEnDisco(self):
+        return self.cola_listos[1]
+    
     def getTamañoCola(self):
         return len(self.cola_listos[0]) + len(self.cola_listos[1])
             

@@ -11,6 +11,7 @@ class proceso:
         self.tiempoEspera = 0
         self.tiempoRetorno = 0
         self.particion = 0
+        self.estado = "new"
 
     def __str__(self) -> str:
         pass
@@ -31,6 +32,9 @@ class proceso:
     def set_restante(self, nuevo_restante):
         self.restante = nuevo_restante
 
+    def get_arribo(self):
+        return self.tiempoArribo
+
     # setter for espera
     def set_espera(self, nuevo_espera):
         self.tiempoEspera = nuevo_espera
@@ -41,3 +45,9 @@ class proceso:
 
     def set_particion(self, particion):
         self.particion = particion
+
+    def set_estado(self, estado):
+        self.estado = estado
+
+    def get_estado(self):
+        return self.estado

@@ -5,12 +5,8 @@ from memoria import memoria
 from planLargo import planificadorLargo
 from planCorto import planificadorCorto
 
-import msvcrt
-
-# por ahi se accede a los atrbutos con get y por ahi con el punto, unificar
-# tdv no esta implementado la memoria secundaria, por ahora si un proceso no termina en el quantum se lo saca de memoria
 # se podria implementar una lista de procesos terminados
-# al hacer cambio de contexto te muestra dos estados pero no suma un ciclo de reloj
+
 
 class Simulador:
     def __init__(self, multiprogramacion=5, quantum=3):
@@ -37,17 +33,20 @@ class Simulador:
 
     # Asignar Memoria
     def planificar_memoria(self):
+        #llamar al de mediano plazo
+        self.planificadorLargoPlazo.planificar_memoria(self.tiempo_actual)    
 
-        self.planificadorLargoPlazo.WorstFit()    
 
-
-    # Planif a mediano plazo. Mover procesos de la cola de nuevos a la cola de listos si hay espacio
-    while len(self.cola_listos) < 5 and self.cola_nuevos:
-                proceso = self.cola_nuevos.pop(0)
-                if self.asignar_memoria(proceso):
-                    self.cola_listos.append(proceso)
+    # # Planif a mediano plazo. Mover procesos de la cola de nuevos a la cola de listos si hay espacio
+    # while len(self.cola_listos) < 5 and self.cola_nuevos:
+    #             proceso = self.cola_nuevos.pop(0)
+    #             if self.asignar_memoria(proceso):
+    #                 self.cola_listos.append(proceso)
         
     # Ejecutar proceso actual en CPU
+    def planificar_cpu(self):
+        self.planificadorCortoPlazo.planificar_cpu()
+
     #Ver como ir liberando memoria
                 
     self.tiempo_actual += 1 
