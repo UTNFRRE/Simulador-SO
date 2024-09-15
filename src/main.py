@@ -33,35 +33,19 @@ class Simulador:
             self.procesos.append(proceso(PID, tiempoArribo, tiempoIrrupcion, tamaño))
      self.planificadorLargoPlazo.set_procesos(self.procesos)
 
-     # self.planificadorLargoPlazo.WorstFit
-    
+    # Asignar Memoria    
 
-    def planificar_cpu_memoria(self):
-            # Mover procesos de la cola de nuevos a la cola de listos si hay espacio
-            while len(self.cola_listos) < 5 and self.cola_nuevos:
+
+    # Planif a mediano plazo. Mover procesos de la cola de nuevos a la cola de listos si hay espacio
+    while len(self.cola_listos) < 5 and self.cola_nuevos:
                 proceso = self.cola_nuevos.pop(0)
                 if self.asignar_memoria(proceso):
                     self.cola_listos.append(proceso)
         
-            # Ejecutar proceso actual en CPU
-            if self.cpu.estaOcupado():
-                self.cpu.ejecutar(self.tiempo_actual)     #si el cpu esta ocupado se ejecuta un ciclo de reloj y se decrementa el tiempo restante del proceso actual
-                proceso_actual = self.cpu.getProcesoActual()
-                if (self.cpu.getTiempoRestante() == 0 or proceso_actual.tiempoRestante == 0):  #si el tiempo restante del proceso actual es 0 o el tiempo restante del quantum es 0
-                    if proceso_actual.tiempoRestante > 0: 
-                        self.cola_listos.append(proceso_actual) #se añade el proceso a la cola de listos
-                    else:
-                        proceso_actual.tiempoRetorno = self.tiempo_actual - proceso_actual.tiempoArribo
-                    self.cpu.setProcesoActual(None)
-                    self.memoria.liberarParticion(proceso_actual.particion)  # se libera la partición en cualquier caso
+    # Ejecutar proceso actual en CPU
+    #Ver como ir liberando memoria
                 
-                self.tiempo_actual += 1 # solo se aumenta el tiempo actual si el cpu esta ocupado
-
-            else:     #si el cpu no esta ocupado asigna un proceso de la cola de listos al cpu
-                if self.cola_listos:    #si hay procesos en la cola de listos, elige el primero y lo asigna al cpu
-                    proceso_actual = self.cola_listos.pop(0)
-                    self.cpu.asignarProceso(proceso_actual)
-                    self.cpu.setTiempoRestante(self.quantum)
+    self.tiempo_actual += 1 
 
             
 

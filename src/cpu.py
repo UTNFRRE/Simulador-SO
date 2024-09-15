@@ -11,21 +11,18 @@ class cpu:
        # self.tiempoRestante = proceso.tiempo  
        # el tiempo restante es el quantum 
     #metodo que ejecuta un ciclo de reloj 
-    def ejecutar(self, tiempo_actual):
+    def ejecutar(self):
         #si hay un proceso en ejecucion se decrementa el tiempo restante de cpu y del proceso actual
             self.tiempoRestante -= 1
             self.procesoActual.tiempoRestante -= 1
-            if self.procesoActual.tiempoEspera == 0:    #hay q ver que pasa con los procesos q se asignan al inicio
-                self.procesoActual.tiempoEspera = tiempo_actual - self.procesoActual.tiempoArribo
+            # if self.procesoActual.tiempoEspera == 0:    #hay q ver que pasa con los procesos q se asignan al inicio
+            #     self.procesoActual.tiempoEspera = tiempo_actual - self.procesoActual.tiempoArribo
             # if self.tiempoRestante == 0 or self.procesoActual.tiempoRestante == 0:  #si el tiempo restante del proceso actual es 0 o el tiempo restante del quantum es 0
             #     self.procesoActual.tiempoRetorno = tiempo_actual - self.procesoActual.tiempoArribo
             #     self.procesoActual = None     #si el tiempo restante es 0 se libera el cpu
     #metodo que retorna el proceso actual
     def getProcesoActual(self):
         return self.procesoActual
-    # setter del proceso actual
-    def setProcesoActual(self, nuevo_proceso):
-        self.procesoActual = nuevo_proceso
     #metodo que retorna el tiempo restante
     def getTiempoRestante(self):
         return self.tiempoRestante
