@@ -3,6 +3,7 @@ from proceso import proceso
 from cpu import cpu
 from memoria import memoria
 from planLargo import planificadorLargo
+from planCorto import planificadorCorto
 
 import msvcrt
 
@@ -12,14 +13,15 @@ import msvcrt
 # al hacer cambio de contexto te muestra dos estados pero no suma un ciclo de reloj
 
 class Simulador:
-    def __init__(self):
+    def __init__(self, multiprogramacion=5, quantum=3):
         self.procesos = []
         self.memoria = memoria()
         self.cpu = cpu()
+        self.multiprogramacion = multiprogramacion   #numero de procesos que pueden estar en la cola de listos
+        self.quantum = quantum
         self.planificadorLargoPlazo = planificadorLargo(self.memoria, self.procesos)
-        self.multiprogramacion = 5   #numero de procesos que pueden estar en la cola de listos
+        self.planificadorCortoPlazo = planificadorCorto(self.memoria, self.cpu, self.quantum)
         self.tiempo_actual = 0
-        self.quantum = 3
 
     def cargar_procesos(self, archivo):
      with open(archivo, 'r') as f:
@@ -33,7 +35,10 @@ class Simulador:
             self.procesos.append(proceso(PID, tiempoArribo, tiempoIrrupcion, tamaño))
      self.planificadorLargoPlazo.set_procesos(self.procesos)
 
-    # Asignar Memoria    
+    # Asignar Memoria
+    def planificar_memoria(self):
+
+        self.planificadorLargoPlazo.WorstFit()    
 
 
     # Planif a mediano plazo. Mover procesos de la cola de nuevos a la cola de listos si hay espacio
@@ -80,7 +85,8 @@ class Simulador:
 
     # Método que ejecuta un ciclo de reloj
     def ejecutar_ciclo(self):
-        self.planificar_cpu_memoria()
+        self.planificar_memoria()
+        self.planificar_cpu()
         self.mostrar_estado()
 
 

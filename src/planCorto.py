@@ -1,6 +1,6 @@
 #Esta clase tiene la responsabilidad de asignar cpu a procesos cargados en memoria
 
-class PlanificadorCorto:
+class planificadorCorto:
 
     def __init__(self, memoria, cpu, quantum):
         self.memoria = memoria

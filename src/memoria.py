@@ -59,10 +59,10 @@ class memoria:
     def liberarParticion(self, particion):
         particion.liberar()
     #en cada ciclo de reloj se aumenta el tiempo acumulado de cada particion
-    def aumentarTiempo(self):
-        for particion in self.particiones:
-            if particion.ocupado:
-                particion.tiempoAcumulado += 1   
+    # def aumentarTiempo(self):
+    #     for particion in self.particiones:
+    #         if particion.ocupado:
+    #             particion.tiempoAcumulado += 1   
 
     def getParticiones(self):
         return self.particiones
@@ -71,7 +71,8 @@ class memoria:
         self.cola_listos[0].append(proceso)    # añado a la primer parte de la lista
 
     def AsignarColaListosEnDisco (self, proceso):
-        self.cola_listos[1].append(proceso)
+        if proceso not in self.cola_listos[1]:
+            self.cola_listos[1].append(proceso)
     
     def getTamañoCola(self):
         return len(self.cola_listos[0]) + len(self.cola_listos[1])

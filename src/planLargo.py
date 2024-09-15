@@ -10,10 +10,10 @@ class planificadorLargo:
 
     def __init__(self, memoria, procesos, multiprogramacion):
         self.memoria = memoria
-        self.procesos = procesos
+        self.procesos = procesos  #tiene que saber todos?
         self.multiprogramacion = multiprogramacion
  
-
+    #ver que devolver para saber si se asigno memoria, disco o nada
     def WorstFit(self, proceso):
         particion_elegida = None
         particiones = self.memoria.getParticiones()
@@ -29,7 +29,7 @@ class planificadorLargo:
             proceso.set_particion(particion_elegida)
             return True
         else:
-            if self.memoria.getTamañoCola() < self.multiprogramacion:
+            if (self.memoria.getTamañoCola() + 1) < self.multiprogramacion:   #se suma 1 por el proceso que esta en cpu
                 self.memoria.AsignarColaListosEnDisco(proceso)
         return False
     
