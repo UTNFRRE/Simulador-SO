@@ -1,0 +1,9 @@
+pid - tamaño - tiempoArribo - tiempoIrrupción
+ 1     40           0               3  
+ 2     150          2               1
+ 3     20           2               2
+ 4     100          3               7
+ 5     80           6               1
+ 6     25           8               1  
+ 7     115          10              5
+ 8     50           11              2
