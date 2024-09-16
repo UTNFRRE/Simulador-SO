@@ -1,7 +1,6 @@
 #clase proceso
 class proceso:
     #constructor
-    restante = 0
     def __init__(self, PID, TA, TI,tamaño):
         self.PID = PID
         self.tiempoArribo = TA
