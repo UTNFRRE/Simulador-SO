@@ -6,7 +6,9 @@ from planLargo import planificadorLargo
 from planCorto import planificadorCorto
 from planMedio import planificadorMedio
 
-# se podria implementar una lista de procesos terminados
+# falta generar informe
+# falta optimizar lo de la carga del archivo
+# falta probar el planificador medio
 
 
 class Simulador:
