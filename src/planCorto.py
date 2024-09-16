@@ -21,6 +21,7 @@ class planificadorCorto:
                     if particion_index is not None:
                         self.memoria.liberarParticion(particion_index)
                     self.colaTerminados.append(proceso_actual)
+                    proceso_actual.set_estado("Finished")
                 self.cpu.asignarProceso(None)
 
     def planificar_cpu(self, tiempo_actual):
