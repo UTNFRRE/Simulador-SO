@@ -49,27 +49,11 @@ class Simulador:
                 
     def mostrar_estado(self):
         print(f"Tiempo actual: {self.tiempo_actual}")
-
-        if self.cpu.estaOcupado():
-            print(f"Proceso en ejecución: {self.cpu.getProcesoActual().PID}")
-            print(f"Tiempo restante CPU: {self.cpu.getTiempoRestante()}")
-            print(f"Tiempo restante proceso: {self.cpu.getProcesoActual().tiempoRestante}")
-        else:
-            print("No hay proceso en ejecución")
-        
+        self.cpu.mostrarCpu() #muestra el estado del cpu
         print("Procesos:")
         for proceso in self.procesos:
              print(f"Proceso {proceso.tiempoArribo} {proceso.tiempoIrrupcion} {proceso.tamaño} {proceso.estado}")
-
-        print("Tabla de particiones:")
-        for particion in self.memoria.getParticiones():
-            print(f"Partición {particion.tamaño}K en {particion.dirInicio}K: Proceso {particion.proceso.PID if particion.proceso else 'Ninguno'}, Fragmentación {particion.fragmentacionInterna}K")
-
-        print("Cola de procesos listos:")
-        for proceso in self.memoria.cola_listos[0]:
-            print(f"Proceso {proceso.PID}")
-
-
+        self.memoria.mostrarMemoria() #muestra el estado de la memoria
         input("Presione Enter para continuar o cualquier otra tecla para cancelar...")
 
     # Método que ejecuta la simulación en un ciclo de reloj

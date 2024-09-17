@@ -32,3 +32,11 @@ class cpu:
     #metodo que retorna si el cpu esta ocupado
     def estaOcupado(self):
         return self.getProcesoActual() != None
+    
+    def mostrarCpu(self):
+        if self.estaOcupado():
+            print(f"Proceso en ejecución: {self.getProcesoActual().PID}")
+            print(f"Tiempo restante CPU: {self.getTiempoRestante()}")
+            print(f"Tiempo restante proceso: {self.getProcesoActual().tiempoRestante}")
+        else:
+            print("No hay proceso en ejecución")

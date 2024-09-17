@@ -85,4 +85,12 @@ class memoria:
     
     def getTamañoCola(self):
         return len(self.cola_listos[0]) + len(self.cola_listos[1])
-            
+    
+    def mostrarMemoria(self):
+        print("Tabla de particiones:")
+        for particion in self.getParticiones():
+            print(f"Partición {particion.tamaño}K en {particion.dirInicio}K: Proceso {particion.proceso.PID if particion.proceso else 'Ninguno'}, Fragmentación {particion.fragmentacionInterna}K")
+
+        print("Cola de procesos listos:")
+        for proceso in self.cola_listos[0]:
+            print(f"Proceso {proceso.PID}")
