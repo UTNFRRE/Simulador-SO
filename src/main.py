@@ -52,7 +52,7 @@ class Simulador:
         self.cpu.mostrarCpu() #muestra el estado del cpu
         print("Procesos:")
         for proceso in self.procesos:
-             print(f"Proceso {proceso.tiempoArribo} {proceso.tiempoIrrupcion} {proceso.tamaño} {proceso.estado}")
+             print(f"Proceso {proceso.PID} {proceso.tiempoArribo} {proceso.tiempoIrrupcion} {proceso.tamaño} {proceso.estado}")
         self.memoria.mostrarMemoria() #muestra el estado de la memoria
         input("Presione Enter para continuar o cualquier otra tecla para cancelar...")
 
@@ -86,6 +86,6 @@ class Simulador:
 
 # Ejecutar simulación
 simulador = Simulador(5,3)
-simulador.cargar_procesos('ejemplo 2.txt')
+simulador.cargar_procesos('ejemplo 3- so.txt')
 simulador.ejecutar_simulacion()
 # simulador.generar_informe()
