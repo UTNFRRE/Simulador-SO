@@ -22,7 +22,7 @@ class planificadorMemoria:
             proceso.set_estado("inMemory")
             return True
         else:
-            if ((self.memoria.getTamañoCola() + 1) < self.multiprogramacion):   #se suma 1 por el proceso que esta en cpu
+            if ((self.memoria.getTamañoCola()) < self.multiprogramacion): 
                 self.memoria.AsignarColaListosEnDisco(proceso)
                 proceso.set_estado("inDisk")
         return False
