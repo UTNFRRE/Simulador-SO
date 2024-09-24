@@ -6,6 +6,10 @@ from planLargo import planificadorLargo
 from planCorto import planificadorCorto
 from planMedio import planificadorMedio
 
+import tkinter as tk   #Para usar una ventana para elegir el archivo
+from tkinter import filedialog
+import os  #Para limpiar la terminal
+
 # falta generar informe
 # falta optimizar lo de la carga del archivo
 # falta probar el planificador medio
@@ -23,18 +27,29 @@ class Simulador:
         self.planificadorMedioPlazo = planificadorMedio(self.memoria, self.multiprogramacion)
         self.tiempo_actual = 0
 
-    def cargar_procesos(self, archivo):
-     with open(archivo, 'r') as f:
-        next(f)  # Saltar la primera línea de encabezado
-        for linea in f:
-            datos = linea.split()
-            PID = int(datos[0])
-            tamaño = int(datos[1])
-            tiempoArribo = int(datos[2])
-            tiempoIrrupcion = int(datos[3])
-            self.procesos.append(proceso(PID, tiempoArribo, tiempoIrrupcion, tamaño))
-     self.planificadorLargoPlazo.set_procesos(self.procesos)
+    def cargar_procesos(self):
+        root = tk.Tk()
+        root.withdraw() 
 
+        archivo = filedialog.askopenfilename(title="Seleccionar archivo con los procesos", filetypes=[("Text files", "*.txt")])
+
+        if archivo:
+                with open(archivo, 'r') as f:
+                    next(f)  # Saltar la primera línea de encabezado
+                    for linea in f:
+                        datos = linea.split()
+                        PID = int(datos[0])
+                        tamaño = int(datos[1])
+                        tiempoArribo = int(datos[2])
+                        tiempoIrrupcion = int(datos[3])
+                        self.procesos.append(proceso(PID, tiempoArribo, tiempoIrrupcion, tamaño))
+                self.planificadorLargoPlazo.set_procesos(self.procesos)
+
+    def limpiar_terminal(self):
+        if os.name == 'nt':  # Para Windows
+            os.system('cls')
+        else:  # Para Unix/Linux/MacOS
+            os.system('clear')
 
     # Asignar Memoria
     def planificar_memoria(self):
@@ -49,27 +64,11 @@ class Simulador:
                 
     def mostrar_estado(self):
         print(f"Tiempo actual: {self.tiempo_actual}")
-
-        if self.cpu.estaOcupado():
-            print(f"Proceso en ejecución: {self.cpu.getProcesoActual().PID}")
-            print(f"Tiempo restante CPU: {self.cpu.getTiempoRestante()}")
-            print(f"Tiempo restante proceso: {self.cpu.getProcesoActual().tiempoRestante}")
-        else:
-            print("No hay proceso en ejecución")
-        
+        self.cpu.mostrarCpu() #muestra el estado del cpu
         print("Procesos:")
         for proceso in self.procesos:
-             print(f"Proceso {proceso.tiempoArribo} {proceso.tiempoIrrupcion} {proceso.tamaño} {proceso.estado}")
-
-        print("Tabla de particiones:")
-        for particion in self.memoria.getParticiones():
-            print(f"Partición {particion.tamaño}K en {particion.dirInicio}K: Proceso {particion.proceso.PID if particion.proceso else 'Ninguno'}, Fragmentación {particion.fragmentacionInterna}K")
-
-        print("Cola de procesos listos:")
-        for proceso in self.memoria.cola_listos[0]:
-            print(f"Proceso {proceso.PID}")
-
-
+             print(f"Proceso {proceso.PID} {proceso.tiempoArribo} {proceso.tiempoIrrupcion} {proceso.tamaño} {proceso.estado}")
+        self.memoria.mostrarMemoria() #muestra el estado de la memoria
         input("Presione Enter para continuar o cualquier otra tecla para cancelar...")
 
     # Método que ejecuta la simulación en un ciclo de reloj
@@ -102,6 +101,7 @@ class Simulador:
 
 # Ejecutar simulación
 simulador = Simulador(5,3)
-simulador.cargar_procesos('ejemplo 2.txt')
+simulador.limpiar_terminal()
+simulador.cargar_procesos()
 simulador.ejecutar_simulacion()
 # simulador.generar_informe()
