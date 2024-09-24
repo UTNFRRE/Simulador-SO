@@ -6,6 +6,9 @@ from planLargo import planificadorLargo
 from planCorto import planificadorCorto
 from planMedio import planificadorMedio
 
+import tkinter as tk
+from tkinter import filedialog
+
 # falta generar informe
 # falta optimizar lo de la carga del archivo
 # falta probar el planificador medio
@@ -23,17 +26,23 @@ class Simulador:
         self.planificadorMedioPlazo = planificadorMedio(self.memoria, self.multiprogramacion)
         self.tiempo_actual = 0
 
-    def cargar_procesos(self, archivo):
-     with open(archivo, 'r') as f:
-        next(f)  # Saltar la primera línea de encabezado
-        for linea in f:
-            datos = linea.split()
-            PID = int(datos[0])
-            tamaño = int(datos[1])
-            tiempoArribo = int(datos[2])
-            tiempoIrrupcion = int(datos[3])
-            self.procesos.append(proceso(PID, tiempoArribo, tiempoIrrupcion, tamaño))
-     self.planificadorLargoPlazo.set_procesos(self.procesos)
+    def cargar_procesos(self):
+        root = tk.Tk()
+        root.withdraw() 
+        
+        archivo = filedialog.askopenfilename(title="Seleccionar archivo con los procesos", filetypes=[("Text files", "*.txt")])
+
+        if archivo:
+                with open(archivo, 'r') as f:
+                    next(f)  # Saltar la primera línea de encabezado
+                    for linea in f:
+                        datos = linea.split()
+                        PID = int(datos[0])
+                        tamaño = int(datos[1])
+                        tiempoArribo = int(datos[2])
+                        tiempoIrrupcion = int(datos[3])
+                        self.procesos.append(proceso(PID, tiempoArribo, tiempoIrrupcion, tamaño))
+                self.planificadorLargoPlazo.set_procesos(self.procesos)
 
 
     # Asignar Memoria
@@ -86,6 +95,6 @@ class Simulador:
 
 # Ejecutar simulación
 simulador = Simulador(5,3)
-simulador.cargar_procesos('ejemplo 3- so.txt')
+simulador.cargar_procesos()
 simulador.ejecutar_simulacion()
 # simulador.generar_informe()
