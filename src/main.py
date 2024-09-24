@@ -6,8 +6,9 @@ from planLargo import planificadorLargo
 from planCorto import planificadorCorto
 from planMedio import planificadorMedio
 
-import tkinter as tk
+import tkinter as tk   #Para usar una ventana para elegir el archivo
 from tkinter import filedialog
+import os  #Para limpiar la terminal
 
 # falta generar informe
 # falta optimizar lo de la carga del archivo
@@ -29,7 +30,7 @@ class Simulador:
     def cargar_procesos(self):
         root = tk.Tk()
         root.withdraw() 
-        
+
         archivo = filedialog.askopenfilename(title="Seleccionar archivo con los procesos", filetypes=[("Text files", "*.txt")])
 
         if archivo:
@@ -44,6 +45,11 @@ class Simulador:
                         self.procesos.append(proceso(PID, tiempoArribo, tiempoIrrupcion, tamaño))
                 self.planificadorLargoPlazo.set_procesos(self.procesos)
 
+    def limpiar_terminal(self):
+        if os.name == 'nt':  # Para Windows
+            os.system('cls')
+        else:  # Para Unix/Linux/MacOS
+            os.system('clear')
 
     # Asignar Memoria
     def planificar_memoria(self):
@@ -95,6 +101,7 @@ class Simulador:
 
 # Ejecutar simulación
 simulador = Simulador(5,3)
+simulador.limpiar_terminal()
 simulador.cargar_procesos()
 simulador.ejecutar_simulacion()
 # simulador.generar_informe()
