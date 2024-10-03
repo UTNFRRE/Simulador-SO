@@ -69,7 +69,7 @@ class Simulador:
         for proceso in self.procesos:
              print(f"Proceso {proceso.PID} {proceso.tiempoArribo} {proceso.tiempoIrrupcion} {proceso.tamaño} {proceso.estado}")
         self.memoria.mostrarMemoria() #muestra el estado de la memoria
-        input("Presione Enter para continuar o cualquier otra tecla para cancelar...")
+        input("Presione Enter para continuar...")
 
     # Método que ejecuta la simulación en un ciclo de reloj
     def ejecutar_simulacion(self):
