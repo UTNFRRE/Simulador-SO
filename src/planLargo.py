@@ -18,7 +18,10 @@ class planificadorLargo(planificadorMemoria):
     def planificar_memoria(self, tiempo_actual):
         for proceso in self.procesos:
             if (tiempo_actual >= proceso.get_arribo() and (proceso.get_estado() == "new")):   
-                self.WorstFit(proceso)
+                if self.WorstFit(proceso):
+                    proceso.set_estado("ready")
+                else:
+                    self.GuardarEnDisco(proceso)
         
 
     

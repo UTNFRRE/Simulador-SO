@@ -19,13 +19,13 @@ class planificadorMemoria:
         if particion_elegida != None:
             self.memoria.añadirProceso(proceso, particion_elegida)    # pedir a memoria q añada, y memoria pide a particion
             # proceso.set_particion(particion_elegida)
-            proceso.set_estado("Ready")
             return True
-        else:
+        return False
+
+    def GuardarEnDisco(self, proceso):
             if ((self.memoria.getTamañoCola()) < self.multiprogramacion): 
                 self.memoria.AsignarColaListosEnDisco(proceso)
                 proceso.set_estado("Ready and suspended")
-        return False
 
     def planificar_memoria(self, tiempo_actual):
         pass
