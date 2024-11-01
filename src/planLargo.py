@@ -22,6 +22,7 @@ class planificadorLargo(planificadorMemoria):
                     proceso.set_estado("ready")
                 else:
                     self.GuardarEnDisco(proceso)
+                    proceso.set_estado("Ready and suspended")
         
 
     

@@ -25,7 +25,7 @@ class planificadorMemoria:
     def GuardarEnDisco(self, proceso):
             if ((self.memoria.getTamañoCola()) < self.multiprogramacion): 
                 self.memoria.AsignarColaListosEnDisco(proceso)
-                proceso.set_estado("Ready and suspended")
+                
 
     def planificar_memoria(self, tiempo_actual):
         pass
