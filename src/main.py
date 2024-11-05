@@ -59,22 +59,21 @@ class Simulador:
     # Ejecutar proceso actual en CPU
     def planificar_cpu(self):
         self.planificadorCortoPlazo.planificar_cpu(self.tiempo_actual)
-
-    #Ver como ir liberando memoria
                 
     def mostrar_estado(self):
+        print ("------------------------------------")
         print(f"Tiempo actual: {self.tiempo_actual}")
         self.cpu.mostrarCpu() #muestra el estado del cpu
         print("Procesos:")
         for proceso in self.procesos:
-             print(f"Proceso {proceso.PID} {proceso.tiempoArribo} {proceso.tiempoIrrupcion} {proceso.tamaño} {proceso.estado}")
+             print(f"Proceso {proceso.PID} {proceso.estado}")
         self.memoria.mostrarMemoria() #muestra el estado de la memoria
         input("Presione Enter para continuar...")
 
     # Método que ejecuta la simulación en un ciclo de reloj
     def ejecutar_simulacion(self):
-        while True: #mientras haya procesos en la cola de procesos, en la cola de listos, en la cola de nuevos o el cpu este ocupado
-            self.planificadorCortoPlazo.terminar_proceso(self.tiempo_actual)
+        while True: 
+            self.planificadorCortoPlazo.dispatcher(self.tiempo_actual)    #para hacer el cambio de contexto de ser necesario
             if len(self.procesos) == len(self.planificadorCortoPlazo.getColaTerminados()):
                 self.mostrar_estado()
                 # self.generar_informe()
@@ -89,19 +88,26 @@ class Simulador:
         self.tiempo_actual += 1
 
 
-    # def generar_informe(self):
-    #     tiempos_retorno = [proceso.tiempoRetorno for proceso in self.procesos]
-    #     tiempos_espera = [proceso.tiempoEspera for proceso in self.procesos]
-    #     print("Informe estadístico:")
-    #     for proceso in self.procesos:
-    #         print(f"Proceso {proceso.PID}: Tiempo de retorno {proceso.tiempoRetorno}, Tiempo de espera {proceso.tiempoEspera}")
-    #     print(f"Tiempo promedio de retorno: {sum(tiempos_retorno) / len(tiempos_retorno)}")
-    #     print(f"Tiempo promedio de espera: {sum(tiempos_espera) / len(tiempos_espera)}")
-    #     print(f"Rendimiento del sistema: {len(self.procesos) / self.tiempo_actual}")
+    def generar_informe(self):
+        n = 0
+        trTotal = 0
+        teTotal = 0
+        print("informe estadistico:\n")
+        print(" PID\tTiempo de retorno\tTiempo de espera\n")
+        for proceso in self.procesos:
+            if proceso.get_estado().lower() == "finished":
+                n += 1
+                trTotal += proceso.tiempoRetorno
+                teTotal += proceso.tiempoEspera
+                print(f"    {proceso.PID}\t{proceso.tiempoRetorno}\t{proceso.tiempoEspera}\n")
+        print(" Tiempo de retorno promedio\tTiempo de espera promedio\n")
+        print(f" {round(trTotal/n,2)}\t{round(teTotal/n)}\n")
+        print(" Rendimiento del sistema\n")
+        print(f"    {round(n/self.tiempo_actual,2)} procesos por unidad de tiempo\n")
 
 # Ejecutar simulación
 simulador = Simulador(5,3)
 simulador.limpiar_terminal()
 simulador.cargar_procesos()
 simulador.ejecutar_simulacion()
-# simulador.generar_informe()
+simulador.generar_informe()
