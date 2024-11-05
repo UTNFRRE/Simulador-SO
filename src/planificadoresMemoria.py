@@ -23,9 +23,7 @@ class planificadorMemoria:
         return False
 
     def GuardarEnDisco(self, proceso):
-            if ((self.memoria.getTamañoCola()) < self.multiprogramacion): 
-                self.memoria.AsignarColaListosEnDisco(proceso)
-                
+        self.memoria.AsignarColaListosEnDisco(proceso)             
 
     def planificar_memoria(self, tiempo_actual):
         pass

@@ -76,9 +76,14 @@ class memoria:
     def AsignarColaListosEnMemoria (self, proceso):
         self.cola_listos[0].append(proceso)    # añado a la primer parte de la lista
 
+    def EliminarColaListosEnMemoria (self, proceso):
+        self.cola_listos[0].remove(proceso)
+
+    def EliminarColaListosEnDisco (self, proceso):
+        self.cola_listos[1].remove(proceso)
+
     def AsignarColaListosEnDisco (self, proceso):
-        if proceso not in self.cola_listos[1]:
-            self.cola_listos[1].append(proceso)
+        self.cola_listos[1].append(proceso)
     
     def getColaListosEnDisco(self):
         return self.cola_listos[1]

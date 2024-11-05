@@ -19,6 +19,8 @@ class planificadorCorto:
                 else:
                     self.terminar_proceso(tiempo_actual, proceso_actual)
                 self.cpu.asignarProceso(None)
+                self.memoria.EliminarColaListosEnMemoria(proceso_actual)
+
 
     def terminar_proceso(self, tiempo_actual, proceso_actual):
         proceso_actual.tiempoRetorno = tiempo_actual - proceso_actual.tiempoArribo
@@ -34,14 +36,20 @@ class planificadorCorto:
         if not self.cpu.estaOcupado():
             self.colaListos = self.memoria.cola_listos[0]
             if self.colaListos:
-                proceso_actual = self.colaListos.pop(0)  #se elige el primer proceso de la cola de listos
+                proceso_actual = self.colaListos[0]  # obtener el primer proceso de la cola de listos sin eliminarlo
                 self.cpu.asignarProceso(proceso_actual)
                 proceso_actual.set_estado("Running")
                 self.cpu.setTiempoRestante(self.quantum)
         
         # Ejecutar proceso actual en CPU
         if self.cpu.estaOcupado():
-            self.cpu.ejecutar() 
+            self.cpu.ejecutar()
+            # proceso_actual = self.cpu.getProcesoActual()
+            # if proceso_actual.tiempoRestante == 0:
+            #     self.colaListos = self.memoria.cola_listos[0]
+            #     self.colaListos.pop(0)  # eliminar el proceso de la cola de listos  }           
+
+                
 
     def getColaTerminados(self):
         return self.colaTerminados

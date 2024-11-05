@@ -59,22 +59,21 @@ class Simulador:
     # Ejecutar proceso actual en CPU
     def planificar_cpu(self):
         self.planificadorCortoPlazo.planificar_cpu(self.tiempo_actual)
-
-    #Ver como ir liberando memoria
                 
     def mostrar_estado(self):
+        print ("------------------------------------")
         print(f"Tiempo actual: {self.tiempo_actual}")
         self.cpu.mostrarCpu() #muestra el estado del cpu
         print("Procesos:")
         for proceso in self.procesos:
-             print(f"Proceso {proceso.PID} {proceso.tiempoArribo} {proceso.tiempoIrrupcion} {proceso.tamaño} {proceso.estado}")
+             print(f"Proceso {proceso.PID} {proceso.estado}")
         self.memoria.mostrarMemoria() #muestra el estado de la memoria
         input("Presione Enter para continuar...")
 
     # Método que ejecuta la simulación en un ciclo de reloj
     def ejecutar_simulacion(self):
-        while True: #mientras haya procesos en la cola de procesos, en la cola de listos, en la cola de nuevos o el cpu este ocupado
-            self.planificadorCortoPlazo.terminar_proceso(self.tiempo_actual)
+        while True: 
+            self.planificadorCortoPlazo.dispatcher(self.tiempo_actual)    #para hacer el cambio de contexto de ser necesario
             if len(self.procesos) == len(self.planificadorCortoPlazo.getColaTerminados()):
                 self.mostrar_estado()
                 # self.generar_informe()
