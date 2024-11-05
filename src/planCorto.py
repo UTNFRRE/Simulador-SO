@@ -44,10 +44,6 @@ class planificadorCorto:
         # Ejecutar proceso actual en CPU
         if self.cpu.estaOcupado():
             self.cpu.ejecutar()
-            # proceso_actual = self.cpu.getProcesoActual()
-            # if proceso_actual.tiempoRestante == 0:
-            #     self.colaListos = self.memoria.cola_listos[0]
-            #     self.colaListos.pop(0)  # eliminar el proceso de la cola de listos  }           
 
                 
 

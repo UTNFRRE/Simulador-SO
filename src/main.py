@@ -76,7 +76,6 @@ class Simulador:
             self.planificadorCortoPlazo.dispatcher(self.tiempo_actual)    #para hacer el cambio de contexto de ser necesario
             if len(self.procesos) == len(self.planificadorCortoPlazo.getColaTerminados()):
                 self.mostrar_estado()
-                # self.generar_informe()
                 break
             self.ejecutar_ciclo()
 
