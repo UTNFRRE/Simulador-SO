@@ -93,15 +93,15 @@ class Simulador:
         trTotal = 0
         teTotal = 0
         print("informe estadistico:\n")
-        print(" PID\tTiempo de retorno\tTiempo de espera\n")
+        print("PID | Tiempo de retorno | Tiempo de espera\n")
         for proceso in self.procesos:
             if proceso.get_estado().lower() == "finished":
                 n += 1
                 trTotal += proceso.tiempoRetorno
                 teTotal += proceso.tiempoEspera
-                print(f"    {proceso.PID}\t{proceso.tiempoRetorno}\t{proceso.tiempoEspera}\n")
-        print(" Tiempo de retorno promedio\tTiempo de espera promedio\n")
-        print(f" {round(trTotal/n,2)}\t{round(teTotal/n)}\n")
+                print(f"{proceso.PID} | {proceso.tiempoRetorno} | {proceso.tiempoEspera}\n")
+        print(f" Tiempo de retorno promedio: {round(trTotal/n,2)} \n")
+        print(f" Tiempo de espera promedio: {round(teTotal/n)}\n")
         print(" Rendimiento del sistema\n")
         print(f"    {round(n/self.tiempo_actual,2)} procesos por unidad de tiempo\n")
 
