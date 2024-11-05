@@ -23,7 +23,7 @@ class planificadorCorto:
 
 
     def terminar_proceso(self, tiempo_actual, proceso_actual):
-        proceso_actual.tiempoRetorno = tiempo_actual - proceso_actual.tiempoArribo
+        proceso_actual.set_retorno( tiempo_actual - proceso_actual.get_arribo() )
         particion_index = self.memoria.getParticionProceso(proceso_actual)
         if particion_index is not None:
             self.memoria.liberarParticion(particion_index)
