@@ -47,6 +47,7 @@ class proceso:
 
     def set_estado(self, estado):
         self.estado = estado
-
+        if estado.lower() == "finished":
+            self.tiempoEspera = self.tiempoRetorno - self.tiempoIrrupcion
     def get_estado(self):
         return self.estado
