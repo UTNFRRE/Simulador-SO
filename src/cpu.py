@@ -1,3 +1,8 @@
+from tabulate import tabulate
+from colorama import Fore, init
+
+init(autoreset=True)
+
 #clase cpu
 class cpu:
     #constructor
@@ -33,10 +38,16 @@ class cpu:
     def estaOcupado(self):
         return self.getProcesoActual() != None
     
-    def mostrarCpu(self):
+    def mostrarCpu(self, tiempo_actual):
         if self.estaOcupado():
-            print(f"Proceso en ejecución: {self.getProcesoActual().PID}")
-            print(f"Tiempo restante CPU: {self.getTiempoRestante()}")
-            print(f"Tiempo restante proceso: {self.getProcesoActual().tiempoRestante}")
+
+            headers = ['Proceso en Ejecucion', Fore.GREEN + f"{self.getProcesoActual().PID}" + Fore.RESET]
+            print(tabulate([headers], tablefmt='grid'))
+
+            data = [
+             [Fore.CYAN + f"{tiempo_actual}" + Fore.RESET + Fore.RESET, Fore.CYAN + f"{self.getTiempoRestante()}" + Fore.RESET, Fore.CYAN + f"{self.getProcesoActual().tiempoRestante} " + Fore.RESET],
+            ]
+            headers = ['Tiempo Actual', 'Tiempo restante CPU', 'Tiempo restante proceso actual']
+            print(tabulate(data, headers=headers, tablefmt='grid'))
         else:
             print("No hay proceso en ejecución")

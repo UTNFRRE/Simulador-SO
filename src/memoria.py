@@ -1,5 +1,8 @@
 from proceso import proceso
-# 
+from tabulate import tabulate
+from colorama import Fore, init
+
+init(autoreset=True)
 
 class particion:
     proceso = None
@@ -92,10 +95,26 @@ class memoria:
         return len(self.cola_listos[0]) + len(self.cola_listos[1])
     
     def mostrarMemoria(self):
-        print("Tabla de particiones:")
-        for particion in self.getParticiones():
-            print(f"Partición {particion.tamaño}K en {particion.dirInicio}K: Proceso {particion.proceso.PID if particion.proceso else 'Ninguno'}, Fragmentación {particion.fragmentacionInterna}K")
 
-        print("Cola de procesos listos:")
-        for proceso in self.cola_listos[0]:
-            print(f"Proceso {proceso.PID}")
+        headers = ['Partición','Dirrecion de Inicio', 'Estado','Proceso', 'Fragmentación interna']
+        print("Tabla de particiones:")
+        data=[]	
+        for particion in self.getParticiones():
+            particion_info = [f"{particion.tamaño}K",f"{particion.dirInicio}K", Fore.RED + 'Ocupado' + Fore.RESET if particion.proceso else Fore.GREEN + 'Libre' + Fore.RESET, particion.proceso.PID if particion.proceso else '-', particion.fragmentacionInterna]
+            data.append(particion_info)
+           # print(f"Partición {particion.tamaño}K en {particion.dirInicio}K: Proceso {particion.proceso.PID if particion.proceso else 'Ninguno'}, Fragmentación {particion.fragmentacionInterna}K")
+        print(tabulate(data, headers=headers, tablefmt='grid'))
+
+        headers = ['PID', 'Tiempo de Arribo', 'Tamaño', 'Tiempo Restante', 'Cargado en']
+        data = []
+        if self.cola_listos[0]:
+            for proceso in self.cola_listos[0]:
+                data.append([proceso.PID, proceso.tiempoArribo, proceso.tamaño, proceso.tiempoRestante,Fore.MAGENTA +  "Memoria" + Fore.RESET])
+            
+        if self.cola_listos[1]:
+            for proceso in self.cola_listos[1]:
+                data.append([proceso.PID, proceso.tiempoArribo, proceso.tamaño, proceso.tiempoRestante,Fore.BLUE +  "Disco" + Fore.RESET])  
+        
+        if data:
+            print("Cola de procesos listos:")
+            print(tabulate(data, headers=headers, tablefmt='grid'))
