@@ -21,9 +21,9 @@ class planificadorLargo(planificadorMemoria):
                 if self.WorstFit(proceso):
                     proceso.set_estado("Ready")
                 else:
-                    if ((self.memoria.getTamañoCola()) < self.multiprogramacion):
-                        print ("Se guardará el proceso ", proceso.PID, " en disco")
+                    if ((self.memoria.getTamañoCola() + 1) < self.multiprogramacion):    #se le suma el proceso que se esta ejecutando
                         self.GuardarEnDisco(proceso)
+                        proceso.set_estado("Ready and suspended")
         
 
     
