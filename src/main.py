@@ -10,10 +10,11 @@ import tkinter as tk   #Para usar una ventana para elegir el archivo
 from tkinter import filedialog
 import os  #Para limpiar la terminal
 
-# falta generar informe
-# falta optimizar lo de la carga del archivo
-# falta probar el planificador medio
+#Para mostrar los datos en forma de tabla
+from tabulate import tabulate
+from colorama import Fore, init
 
+init(autoreset=True)
 
 class Simulador:
     def __init__(self, multiprogramacion, quantum):
@@ -61,13 +62,20 @@ class Simulador:
         self.planificadorCortoPlazo.planificar_cpu(self.tiempo_actual)
                 
     def mostrar_estado(self):
-        print ("------------------------------------")
-        print(f"Tiempo actual: {self.tiempo_actual}")
-        self.cpu.mostrarCpu() #muestra el estado del cpu
-        print("Procesos:")
-        for proceso in self.procesos:
-             print(f"Proceso {proceso.PID} {proceso.estado}")
+        
+        self.cpu.mostrarCpu(self.tiempo_actual) #muestra el estado del cpu
+
         self.memoria.mostrarMemoria() #muestra el estado de la memoria
+
+        colaTerminados = self.planificadorCortoPlazo.getColaTerminados()
+        headers = []
+        if colaTerminados:
+            print("Procesos terminados:")
+            for proceso in colaTerminados:
+                headers.append(Fore.YELLOW + f"{proceso.PID}" + Fore.RESET)
+            print(tabulate([headers], tablefmt='grid'))
+
+            
         input("Presione Enter para continuar...")
 
     # Método que ejecuta la simulación en un ciclo de reloj
