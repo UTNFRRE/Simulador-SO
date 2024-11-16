@@ -99,22 +99,24 @@ class Simulador:
         n = 0
         trTotal = 0
         teTotal = 0
-        print("informe estadistico:\n")
-        print("PID | Tiempo de retorno | Tiempo de espera\n")
+        print(Fore.GREEN + "Informe estadistico" + Fore.RESET)
+        headers = ['PID', 'Tiempo de Retorno', 'Tiempo de Espera']
+        data = []
         for proceso in self.procesos:
             if proceso.get_estado().lower() == "finished":
                 n += 1
                 trTotal += proceso.tiempoRetorno
                 teTotal += proceso.tiempoEspera
-                print(f"{proceso.PID} | {proceso.tiempoRetorno} | {proceso.tiempoEspera}\n")
-        print(f" Tiempo de retorno promedio: {round(trTotal/n,2)} \n")
-        print(f" Tiempo de espera promedio: {round(teTotal/n)}\n")
-        print(" Rendimiento del sistema\n")
-        print(f"    {round(n/self.tiempo_actual,2)} procesos por unidad de tiempo\n")
+                data.append([proceso.PID, proceso.tiempoRetorno, proceso.tiempoEspera])
+        print(tabulate(data, headers=headers, tablefmt='grid'))
+        headers = ['Tiempo de retorno promedio', 'Tiempo de espera promedio', 'Rendimiento del sistema', 'Procesos procesados']
+        data = [[round(trTotal/n,2), round(teTotal/n), round(n/self.tiempo_actual,2), n]]
+        print(tabulate(data, headers=headers, tablefmt='grid'))
 
 # Ejecutar simulación
 simulador = Simulador(5,3)
 simulador.limpiar_terminal()
 simulador.cargar_procesos()
 simulador.ejecutar_simulacion()
+simulador.limpiar_terminal()
 simulador.generar_informe()
