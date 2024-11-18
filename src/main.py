@@ -44,6 +44,8 @@ class Simulador:
                         tiempoArribo = int(datos[2])
                         tiempoIrrupcion = int(datos[3])
                         self.procesos.append(proceso(PID, tiempoArribo, tiempoIrrupcion, tamaño))
+                # Ordenar los procesos por tiempoArribo de menor a mayor
+                self.procesos.sort(key=lambda p: p.tiempoArribo)
                 self.planificadorLargoPlazo.set_procesos(self.procesos)
 
     def limpiar_terminal(self):
@@ -118,5 +120,4 @@ simulador = Simulador(5,3)
 simulador.limpiar_terminal()
 simulador.cargar_procesos()
 simulador.ejecutar_simulacion()
-simulador.limpiar_terminal()
 simulador.generar_informe()
