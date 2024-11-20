@@ -57,7 +57,8 @@ class Simulador:
     # Asignar Memoria
     def planificar_memoria(self):
         self.planificadorMedioPlazo.planificar_memoria(self.tiempo_actual)
-        self.planificadorLargoPlazo.planificar_memoria(self.tiempo_actual)    
+        proceso_actual = self.cpu.getProcesoActual()
+        self.planificadorLargoPlazo.planificar_memoria(self.tiempo_actual, proceso_actual)
         
     # Ejecutar proceso actual en CPU
     def planificar_cpu(self):

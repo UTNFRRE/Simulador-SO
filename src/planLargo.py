@@ -15,15 +15,22 @@ class planificadorLargo(planificadorMemoria):
     def set_procesos(self, procesos):
         self.procesos = procesos
 
-    def planificar_memoria(self, tiempo_actual):
+    def planificar_memoria(self, tiempo_actual, procesoo=None):
         for proceso in self.procesos:
             if (tiempo_actual >= proceso.get_arribo() and (proceso.get_estado() == "new")):   
                 if self.WorstFit(proceso):
                     proceso.set_estado("Ready")
                 else:
-                    if ((self.memoria.getTamañoCola() + 1) < self.multiprogramacion):    #se le suma el proceso que se esta ejecutando
-                        self.GuardarEnDisco(proceso)
-                        proceso.set_estado("Ready and suspended")
+                    print("No hay espacio en memoria para el proceso", )
+                    # Dependiendo de que si esta libre la cpu o no, es si debe o no sumar para la multiprogramacion
+                    if procesoo is None:
+                        if self.memoria.getTamañoCola() < self.multiprogramacion:
+                            self.GuardarEnDisco(proceso)
+                            proceso.set_estado("Ready and suspended")
+                    else:
+                            if (self.memoria.getTamañoCola() + 1) < self.multiprogramacion:
+                                self.GuardarEnDisco(proceso)
+                                proceso.set_estado("Ready and suspended")
         
 
     
