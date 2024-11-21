@@ -113,7 +113,7 @@ class Simulador:
                 data.append([proceso.PID, proceso.tiempoRetorno, proceso.tiempoEspera])
         print(tabulate(data, headers=headers, tablefmt='grid'))
         headers = ['Tiempo de retorno promedio', 'Tiempo de espera promedio', 'Rendimiento del sistema', 'Procesos procesados']
-        data = [[round(trTotal/n,2), round(teTotal/n), round(n/self.tiempo_actual,2), n]]
+        data = [[round(trTotal/n,2), round(teTotal/n, 2), round(n/self.tiempo_actual,2), n]]
         print(tabulate(data, headers=headers, tablefmt='grid'))
 
 # Ejecutar simulación
