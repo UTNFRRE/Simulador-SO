@@ -1,10 +1,13 @@
+
 #logica principal del simulador
+from globales import variablesGlobales
 from proceso import proceso
 from cpu import cpu
 from memoria import memoria
 from planLargo import planificadorLargo
 from planCorto import planificadorCorto
 from planMedio import planificadorMedio
+
 
 import tkinter as tk   #Para usar una ventana para elegir el archivo
 from tkinter import filedialog
@@ -13,8 +16,12 @@ import os  #Para limpiar la terminal
 #Para mostrar los datos en forma de tabla
 from tabulate import tabulate
 from colorama import Fore, init
+import csv
+
 
 init(autoreset=True)
+# Bandera para saber si mostrar el estado del simulador
+
 
 class Simulador:
     def __init__(self, multiprogramacion, quantum):
@@ -30,12 +37,20 @@ class Simulador:
 
     def cargar_procesos(self):
         root = tk.Tk()
-        root.withdraw() 
+        root.withdraw()
 
-        archivo = filedialog.askopenfilename(title="Seleccionar archivo con los procesos", filetypes=[("Text files", "*.txt")])
+        archivo = filedialog.askopenfilename(title="Seleccionar archivo con los procesos", filetypes=[("Text files", "*.txt"), ("CSV files", "*.csv")])
 
         if archivo:
-                with open(archivo, 'r') as f:
+            extension = os.path.splitext(archivo)[1]
+            with open(archivo, 'r') as f:
+                if extension == '.csv':
+                    reader = csv.reader(f)
+                    next(reader)  # Saltar la primera línea de encabezado
+                    for linea in reader:
+                        PID, tamaño, tiempoArribo, tiempoIrrupcion = map(int, linea)
+                        self.procesos.append(proceso(PID, tiempoArribo, tiempoIrrupcion, tamaño))
+                else:
                     next(f)  # Saltar la primera línea de encabezado
                     for linea in f:
                         datos = linea.split()
@@ -44,9 +59,9 @@ class Simulador:
                         tiempoArribo = int(datos[2])
                         tiempoIrrupcion = int(datos[3])
                         self.procesos.append(proceso(PID, tiempoArribo, tiempoIrrupcion, tamaño))
-                # Ordenar los procesos por tiempoArribo de menor a mayor
-                self.procesos.sort(key=lambda p: p.tiempoArribo)
-                self.planificadorLargoPlazo.set_procesos(self.procesos)
+            # Ordenar los procesos por tiempoArribo de menor a mayor
+            self.procesos.sort(key=lambda p: p.tiempoArribo)
+            self.planificadorLargoPlazo.set_procesos(self.procesos)
 
     def limpiar_terminal(self):
         if os.name == 'nt':  # Para Windows
@@ -86,15 +101,16 @@ class Simulador:
         while True: 
             self.planificadorCortoPlazo.dispatcher(self.tiempo_actual)    #para hacer el cambio de contexto de ser necesario
             if len(self.procesos) == len(self.planificadorCortoPlazo.getColaTerminados()):
-                self.mostrar_estado()
                 break
             self.ejecutar_ciclo()
 
     # Método que ejecuta un ciclo de reloj
     def ejecutar_ciclo(self):
         self.planificar_memoria()
-        self.planificar_cpu()
-        self.mostrar_estado()
+        self.planificar_cpu()  
+        if variablesGlobales.bandera:
+            self.mostrar_estado()
+            variablesGlobales.bandera = False
         self.tiempo_actual += 1
 
 

@@ -7,7 +7,6 @@ init(autoreset=True)
 class particion:
     proceso = None
     fragmentacionInterna =0
-    tiempoAcumulado = 0     #??
     ocupado = False
     tamaño = 0
     dirInicio = 0
@@ -22,7 +21,6 @@ class particion:
         self.fragmentacionInterna = self.tamaño - proceso.tamaño
 
     def liberar(self):
-        print(f"Se ha liberado la partición de {self.tamaño}K en {self.dirInicio}K")
         self.proceso = None
         self.ocupado = False
         self.fragmentacionInterna = 0 

@@ -1,4 +1,5 @@
 #Esta clase tiene la responsabilidad de asignar cpu a procesos cargados en memoria
+from globales import variablesGlobales
 
 class planificadorCorto:
 
@@ -22,6 +23,7 @@ class planificadorCorto:
 
 
     def terminar_proceso(self, tiempo_actual, proceso_actual):
+        variablesGlobales.bandera = True
         proceso_actual.set_retorno( tiempo_actual - proceso_actual.get_arribo() )
         particion_index = self.memoria.getParticionProceso(proceso_actual)
         if particion_index is not None:
@@ -30,11 +32,13 @@ class planificadorCorto:
         proceso_actual.set_estado("Finished")
 
 
+
     def planificar_cpu(self, tiempo_actual):
         #Asignar procesos de la cola de listos al CPU
         if not self.cpu.estaOcupado():
             self.colaListos = self.memoria.cola_listos[0]
             if self.colaListos:
+                variablesGlobales.bandera = True
                 proceso_actual = self.colaListos[0]  # obtener el primer proceso de la cola de listos sin eliminarlo
                 self.memoria.EliminarColaListosEnMemoria(proceso_actual)
                 self.cpu.asignarProceso(proceso_actual)
