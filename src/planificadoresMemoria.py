@@ -1,4 +1,4 @@
-# clase abtracta planificadores de memoria, incluye planificador largo y medio
+# Esta clase tiene la responsabilidad de encontrar una particion de memoria para un proceso
 
 class planificadorMemoria:
 
@@ -17,8 +17,7 @@ class planificadorMemoria:
                     max_fragmentacion = fragmentacion
                     particion_elegida = particiones.index(particion)
         if particion_elegida != None:
-            self.memoria.añadirProceso(proceso, particion_elegida)    # pedir a memoria q añada, y memoria pide a particion
-            # proceso.set_particion(particion_elegida)
+            self.memoria.añadirProceso(proceso, particion_elegida)    
             return True
         return False
 
