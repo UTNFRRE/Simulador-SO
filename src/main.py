@@ -40,19 +40,22 @@ class Simulador:
         root = tk.Tk()
         root.withdraw()
 
-        archivo = filedialog.askopenfilename(title="Seleccionar archivo con los procesos", filetypes=[("Text files", "*.txt"), ("CSV files", "*.csv")])
+        archivo = filedialog.askopenfilename(
+            title="Seleccionar archivo con los procesos",
+            filetypes=[("Text files", "*.txt"), ("CSV files", "*.csv")]
+        )
 
         if archivo:
             extension = os.path.splitext(archivo)[1]
             with open(archivo, 'r') as f:
                 if extension == '.csv':
-                    reader = csv.reader(f)
+                    reader = csv.reader(f, delimiter=';')
                     next(reader)  
                     for linea in reader:
                         PID, tamaño, tiempoArribo, tiempoIrrupcion = map(int, linea)
                         self.procesos.append(proceso(PID, tiempoArribo, tiempoIrrupcion, tamaño))
                 else:
-                    next(f)  # Saltar la primera línea de encabezado
+                    next(f) 
                     for linea in f:
                         datos = linea.split()
                         PID = int(datos[0])
