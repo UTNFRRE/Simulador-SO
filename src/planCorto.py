@@ -16,7 +16,7 @@ class planificadorCorto:
         if proceso_actual != None:
             if (self.cpu.getTiempoRestante() == 0 or proceso_actual.tiempoRestante == 0):
                 if proceso_actual.tiempoRestante > 0: 
-                    self.memoria.cola_listos[0].append(proceso_actual) #se añade el proceso a la cola de listos
+                    self.memoria.cola_listos[0].append(proceso_actual) 
                     proceso_actual.set_estado("Ready")
                 else:
                     self.terminar_proceso(tiempo_actual, proceso_actual)

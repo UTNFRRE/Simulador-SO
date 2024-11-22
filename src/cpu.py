@@ -5,7 +5,6 @@ init(autoreset=True)
 
 
 class cpu:
-    
     procesoActual = None
     def __init__(self):
         self.proceso = None

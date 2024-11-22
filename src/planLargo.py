@@ -20,7 +20,7 @@ class planificadorLargo(planificadorMemoria):
                     variablesGlobales.bandera = True
                     proceso.set_estado("Ready")
                 else:
-                    # Dependiendo de que si esta libre la cpu o no, es si debe o no sumar para la multiprogramacion
+                    # Dependiendo de que si esta libre la cpu o no, es distinta la comparacion para la multiprogramacion
                     if procesoEnCpu is None:
                         if self.memoria.getTamañoCola() < self.multiprogramacion:
                             variablesGlobales.bandera = True

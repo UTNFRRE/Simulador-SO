@@ -16,7 +16,9 @@ import os
 
 #Para mostrar los datos en forma de tabla
 from tabulate import tabulate
-from colorama import Fore, init, Style
+from colorama import Fore, init
+
+#Para leer archivos csv
 import csv
 
 
@@ -35,20 +37,6 @@ class Simulador:
         self.planificadorCortoPlazo = planificadorCorto(self.memoria, self.cpu, self.quantum)
         self.planificadorMedioPlazo = planificadorMedio(self.memoria, self.multiprogramacion)
         self.tiempo_actual = 0
-
-    def mostrar_bienvenida(self):
-        bienvenida = f"""
-        {Fore.CYAN}{Style.BRIGHT}
-        *********************************************************************************
-        *                                                                               *
-        *        ¡Bienvenido al Simulador de Memoria y Planificación de procesos!       *
-        *                                    Team WSL                                   *
-        *                                                                               *
-        *********************************************************************************
-        {Style.RESET_ALL}
-        """
-        print(bienvenida)
-        input("Presione Enter para empezar...")
     
     def mostrar_eliminados(self):
         print(Fore.RED + "Los siguientes procesos han sido eliminados por exceder el tamaño de la partición de memoria:")
@@ -120,7 +108,6 @@ class Simulador:
             for proceso in colaTerminados:
                 headers.append(Fore.YELLOW + f"{proceso.PID}" + Fore.RESET)
             print(tabulate([headers], tablefmt='grid'))
-
             
         input("Presione Enter para continuar...")
 
@@ -166,7 +153,6 @@ class Simulador:
 simulador = Simulador(5,3)
 
 simulador.limpiar_terminal()
-simulador.mostrar_bienvenida()
 simulador.cargar_procesos()
 
 if simulador.procesosEliminados:
