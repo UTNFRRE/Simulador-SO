@@ -1,6 +1,7 @@
-#Planificador encargado de asignar procesos de disco a memoria
 from planificadoresMemoria import planificadorMemoria
 from globales import variablesGlobales
+
+#Esta clase tiene la responsabilidad de asignar procesos de disco a memoria
 class planificadorMedio(planificadorMemoria):
 
     def __init__(self, memoria, multiprogramacion):

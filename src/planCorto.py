@@ -1,4 +1,4 @@
-#Esta clase tiene la responsabilidad de asignar cpu a procesos cargados en memoria
+#Esta clase tiene la responsabilidad de asignar cpu a procesos y sacarlos
 from globales import variablesGlobales
 
 class planificadorCorto:
@@ -10,6 +10,7 @@ class planificadorCorto:
         self.cpu = cpu
         self.quantum = quantum
 
+    # Metodo que se encarga de realizar el cambio de contexto
     def dispatcher(self, tiempo_actual):
         proceso_actual = self.cpu.getProcesoActual()
         if proceso_actual != None:
@@ -39,7 +40,7 @@ class planificadorCorto:
             self.colaListos = self.memoria.cola_listos[0]
             if self.colaListos:
                 variablesGlobales.bandera = True
-                proceso_actual = self.colaListos[0]  # obtener el primer proceso de la cola de listos sin eliminarlo
+                proceso_actual = self.colaListos[0] #Se asigna el primer proceso de la cola de listos
                 self.memoria.EliminarColaListosEnMemoria(proceso_actual)
                 self.cpu.asignarProceso(proceso_actual)
                 proceso_actual.set_estado("Running")

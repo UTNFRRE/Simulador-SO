@@ -1,5 +1,4 @@
 
-#logica principal del simulador
 from globales import variablesGlobales
 from proceso import proceso
 from cpu import cpu
@@ -8,10 +7,12 @@ from planLargo import planificadorLargo
 from planCorto import planificadorCorto
 from planMedio import planificadorMedio
 
-
-import tkinter as tk   #Para usar una ventana para elegir el archivo
+#Para usar una ventana para elegir el archivo
+import tkinter as tk   
 from tkinter import filedialog
-import os  #Para limpiar la terminal
+
+#Para usar una ventana para elegir el archivo
+import os 
 
 #Para mostrar los datos en forma de tabla
 from tabulate import tabulate
@@ -20,21 +21,21 @@ import csv
 
 
 init(autoreset=True)
-# Bandera para saber si mostrar el estado del simulador
 
-
+# Esta clase contiene la logica de la simulacion
 class Simulador:
     def __init__(self, multiprogramacion, quantum):
         self.procesos = []
         self.memoria = memoria()
         self.cpu = cpu()
-        self.multiprogramacion = multiprogramacion   #numero de procesos que pueden estar en la cola de listos
+        self.multiprogramacion = multiprogramacion   
         self.quantum = quantum
         self.planificadorLargoPlazo = planificadorLargo(self.memoria, self.procesos, self.multiprogramacion)
         self.planificadorCortoPlazo = planificadorCorto(self.memoria, self.cpu, self.quantum)
         self.planificadorMedioPlazo = planificadorMedio(self.memoria, self.multiprogramacion)
         self.tiempo_actual = 0
 
+    # Método para cargar los procesos desde un archivo
     def cargar_procesos(self):
         root = tk.Tk()
         root.withdraw()
@@ -46,7 +47,7 @@ class Simulador:
             with open(archivo, 'r') as f:
                 if extension == '.csv':
                     reader = csv.reader(f)
-                    next(reader)  # Saltar la primera línea de encabezado
+                    next(reader)  
                     for linea in reader:
                         PID, tamaño, tiempoArribo, tiempoIrrupcion = map(int, linea)
                         self.procesos.append(proceso(PID, tiempoArribo, tiempoIrrupcion, tamaño))
@@ -63,6 +64,7 @@ class Simulador:
             self.procesos.sort(key=lambda p: p.tiempoArribo)
             self.planificadorLargoPlazo.set_procesos(self.procesos)
 
+    # Método para limpiar la terminal
     def limpiar_terminal(self):
         if os.name == 'nt':  # Para Windows
             os.system('cls')
@@ -80,10 +82,8 @@ class Simulador:
         self.planificadorCortoPlazo.planificar_cpu(self.tiempo_actual)
                 
     def mostrar_estado(self):
-        
-        self.cpu.mostrarCpu(self.tiempo_actual) #muestra el estado del cpu
-
-        self.memoria.mostrarMemoria() #muestra el estado de la memoria
+        self.cpu.mostrarCpu(self.tiempo_actual) 
+        self.memoria.mostrarMemoria() 
 
         colaTerminados = self.planificadorCortoPlazo.getColaTerminados()
         headers = []
@@ -96,10 +96,10 @@ class Simulador:
             
         input("Presione Enter para continuar...")
 
-    # Método que ejecuta la simulación en un ciclo de reloj
+    # Método que ejecuta la simulación
     def ejecutar_simulacion(self):
         while True: 
-            self.planificadorCortoPlazo.dispatcher(self.tiempo_actual)    #para hacer el cambio de contexto de ser necesario
+            self.planificadorCortoPlazo.dispatcher(self.tiempo_actual)    # Cambio de contexto
             if len(self.procesos) == len(self.planificadorCortoPlazo.getColaTerminados()):
                 break
             self.ejecutar_ciclo()
@@ -128,7 +128,7 @@ class Simulador:
                 teTotal += proceso.tiempoEspera
                 data.append([proceso.PID, proceso.tiempoRetorno, proceso.tiempoEspera])
         print(tabulate(data, headers=headers, tablefmt='grid'))
-        headers = ['Tiempo de retorno promedio', 'Tiempo de espera promedio', 'Rendimiento del sistema', 'Procesos procesados']
+        headers = ['Tiempo de retorno promedio', 'Tiempo de espera promedio', 'Rendimiento del sistema','Procesos procesados']
         data = [[round(trTotal/n,2), round(teTotal/n, 2), round(n/self.tiempo_actual,2), n]]
         print(tabulate(data, headers=headers, tablefmt='grid'))
 
@@ -137,4 +137,5 @@ simulador = Simulador(5,3)
 simulador.limpiar_terminal()
 simulador.cargar_procesos()
 simulador.ejecutar_simulacion()
+simulador.limpiar_terminal()
 simulador.generar_informe()

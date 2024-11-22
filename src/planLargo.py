@@ -1,10 +1,8 @@
-#clase planLargo (planificador a latgo plazo)
+
 from globales import variablesGlobales
 from planificadoresMemoria import planificadorMemoria
-# 1- Worst fit 
-# asignar la particion 
-# manejar la cola de procesos nuevos
 
+# Esta clase tiene la responsabilidad de asignar a memoria o disco los procesos nuevos
 class planificadorLargo(planificadorMemoria):
 
 
