@@ -16,7 +16,7 @@ import os
 
 #Para mostrar los datos en forma de tabla
 from tabulate import tabulate
-from colorama import Fore, init
+from colorama import Fore, init, Style
 import csv
 
 
@@ -26,6 +26,7 @@ init(autoreset=True)
 class Simulador:
     def __init__(self, multiprogramacion, quantum):
         self.procesos = []
+        self.procesosEliminados = []
         self.memoria = memoria()
         self.cpu = cpu()
         self.multiprogramacion = multiprogramacion   
@@ -34,6 +35,27 @@ class Simulador:
         self.planificadorCortoPlazo = planificadorCorto(self.memoria, self.cpu, self.quantum)
         self.planificadorMedioPlazo = planificadorMedio(self.memoria, self.multiprogramacion)
         self.tiempo_actual = 0
+
+    def mostrar_bienvenida(self):
+        bienvenida = f"""
+        {Fore.CYAN}{Style.BRIGHT}
+        *********************************************************************************
+        *                                                                               *
+        *        ¡Bienvenido al Simulador de Memoria y Planificación de procesos!       *
+        *                                    Team WSL                                   *
+        *                                                                               *
+        *********************************************************************************
+        {Style.RESET_ALL}
+        """
+        print(bienvenida)
+        input("Presione Enter para empezar...")
+    
+    def mostrar_eliminados(self):
+        print(Fore.RED + "Los siguientes procesos han sido eliminados por exceder el tamaño de la partición de memoria:")
+        for proceso in self.procesosEliminados:
+            print(f"PID: {proceso.PID}, Tamaño: {proceso.tamaño}K")
+        print(Fore.RESET)
+        input("Presione Enter para continuar...")
 
     # Método para cargar los procesos desde un archivo
     def cargar_procesos(self):
@@ -63,6 +85,9 @@ class Simulador:
                         tiempoArribo = int(datos[2])
                         tiempoIrrupcion = int(datos[3])
                         self.procesos.append(proceso(PID, tiempoArribo, tiempoIrrupcion, tamaño))
+            # Eliminar procesos cuyo tamaño sea mayor a 250
+            self.procesosEliminados = [p for p in self.procesos if p.tamaño > self.memoria.particiones[0].tamaño]
+            self.procesos = [p for p in self.procesos if p.tamaño <= self.memoria.particiones[0].tamaño]
             # Ordenar los procesos por tiempoArribo de menor a mayor
             self.procesos.sort(key=lambda p: p.tiempoArribo)
             self.planificadorLargoPlazo.set_procesos(self.procesos)
@@ -135,10 +160,20 @@ class Simulador:
         data = [[round(trTotal/n,2), round(teTotal/n, 2), round(n/self.tiempo_actual,2), n]]
         print(tabulate(data, headers=headers, tablefmt='grid'))
 
+        input("Presione Enter para terminar...")
+
 # Ejecutar simulación
 simulador = Simulador(5,3)
+
 simulador.limpiar_terminal()
+simulador.mostrar_bienvenida()
 simulador.cargar_procesos()
+
+if simulador.procesosEliminados:
+    simulador.mostrar_eliminados()
+
+simulador.limpiar_terminal()
 simulador.ejecutar_simulacion()
+
 simulador.limpiar_terminal()
 simulador.generar_informe()
