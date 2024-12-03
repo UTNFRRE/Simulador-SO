@@ -74,7 +74,7 @@ class Simulador:
                         tiempoIrrupcion = int(datos[3])
                         self.procesos.append(proceso(PID, tiempoArribo, tiempoIrrupcion, tamaño))
             # Eliminar procesos cuyo tamaño sea mayor a 250
-            self.procesosEliminados = [p for p in self.procesos if p.tamaño >= self.memoria.particiones[0].tamaño]
+            self.procesosEliminados = [p for p in self.procesos if p.tamaño > self.memoria.particiones[0].tamaño]
             self.procesos = [p for p in self.procesos if p.tamaño <= self.memoria.particiones[0].tamaño]
             # Ordenar los procesos por tiempoArribo de menor a mayor
             self.procesos.sort(key=lambda p: p.tiempoArribo)
